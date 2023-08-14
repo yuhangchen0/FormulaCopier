@@ -19,7 +19,7 @@ It's currently only tested to work on Google Chrome and hasn't been tested on ot
 
 ## Installation
 1. Ensure you have [Tampermonkey](http://tampermonkey.net/) or a similar user script manager installed.
-2. Visit the main page of this project to copy; the Tampermonkey installation link will be updated later.
+2. Click [Install Link](https://github.com/yuhangchen0/FormulaCopier/raw/main/FormulaCopier.user.js) and you will be directed to the Tempermonkey install page. Simply install it.
 
 ## Usage
 1. After installing the script, visit Zhihu or Zhihu Zhuanlan.

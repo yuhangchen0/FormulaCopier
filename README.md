@@ -18,8 +18,8 @@
 - **公式高亮**：当你选中包含LaTeX公式的文本时，公式会被高亮显示，使你能够轻松地识别是否复制文本。
 
 ## 安装
-1. 确保你已经安装了[Tampermonkey](http://tampermonkey.net/)或类似的用户脚本管理器。
-2. 访问本项目的主页复制，油猴安装链接请等待后续更新。
+1. 确保你已经安装了[Tampermonkey](http://tampermonkey.net/)或类似的用户脚本管理器并启动。
+2. 点击 [安装插件](https://github.com/yuhangchen0/FormulaCopier/raw/main/FormulaCopier.user.js) 即可弹出油猴安装页面，点击安装即可。
 
 ## 使用方法
 1. 安装脚本后，访问知乎或知乎专栏。
