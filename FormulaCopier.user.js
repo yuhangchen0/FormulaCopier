@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Copy Formulas from Zhihu
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Copy LaTeX formulas when copying text on Zhihu.
 // @author       YuhangChen(github.com/yuhangchen0)
 // @match        https://www.zhihu.com/*
@@ -12,8 +12,10 @@
 (function() {
     'use strict';
 
+    // Style for highlighting selected formulas
+    const highlightStyle = 'background-color: yellow;';
+
     document.addEventListener('copy', function(event) {
-        const selection = window.getSelection();
         let selectedHtml = getSelectionHtml();
 
         // Check if we have any formula in the selection.
@@ -33,6 +35,31 @@
             event.preventDefault(); // Prevent default copy action
         }
     });
+
+    // When selection changes, check if any formula is selected
+    document.addEventListener('selectionchange', function() {
+        const allFormulas = document.querySelectorAll('.ztext-math');
+        allFormulas.forEach(formula => {
+            formula.removeAttribute('style'); // Clear previous highlights
+        });
+
+        const sel = window.getSelection();
+        if (sel.rangeCount) {
+            for (let i = 0; i < sel.rangeCount; i++) {
+                const range = sel.getRangeAt(i);
+                const selectedFormulas = range.cloneContents().querySelectorAll('.ztext-math');
+                selectedFormulas.forEach(selectedFormula => {
+                    allFormulas.forEach(pageFormula => {
+                        if (selectedFormula.getAttribute('data-tex') === pageFormula.getAttribute('data-tex') && selectedFormula.isEqualNode(pageFormula)) {
+                            pageFormula.setAttribute('style', highlightStyle);
+                        }
+                    });
+                });
+            }
+        }
+    });
+
+    
 
     function getSelectionHtml() {
         const sel = window.getSelection();
