@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Copy Formulas from Zhihu
+// @name         FormulaCopier 
 // @namespace    http://tampermonkey.net/
 // @version      0.2
 // @description  Copy LaTeX formulas when copying text on Zhihu.
@@ -13,7 +13,7 @@
     'use strict';
 
     // Style for highlighting selected formulas
-    const highlightStyle = 'background-color: yellow;';
+    const highlightStyle = 'background-color: lightblue;';
 
     document.addEventListener('copy', function(event) {
         let selectedHtml = getSelectionHtml();

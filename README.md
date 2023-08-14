@@ -1,3 +1,5 @@
+[English](./README_EN.md) | 中文
+
 # FormulaCopier
 在某些网站（比如zhihu.com）复制内容时，如果出现被渲染的LeTeX公式，那么这个公式可能无法被复制.
 
