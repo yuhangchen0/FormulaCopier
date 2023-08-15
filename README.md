@@ -7,6 +7,7 @@
 
 目前只在Google Chrome上测试可用，尚未测试其他浏览器。
 
+
 ## 支持网页
 
 * https://www.zhihu.com/*
@@ -31,3 +32,7 @@
 
 ## 许可证
 本项目使用MIT许可证。
+
+## 预览
+
+![预览](./img/preview.png)

@@ -7,6 +7,7 @@ This Tampermonkey script allows you to copy the text along with its LaTeX formul
 
 It's currently only tested to work on Google Chrome and hasn't been tested on other browsers.
 
+
 ## Supported Websites
 
 * https://www.zhihu.com/*
@@ -31,3 +32,7 @@ If you encounter any issues or have any suggestions while using it, feel free to
 
 ## License
 This project is licensed under the MIT license.
+
+## Preview
+
+![Preview](./img/preview.png)
