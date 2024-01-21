@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FormulaCopier 
 // @namespace    http://tampermonkey.net/
-// @version      0.21
+// @version      0.22
 // @description  Copy LaTeX formulas when copying text on Zhihu.
 // @author       YuhangChen(github.com/yuhangchen0)
 // @match        https://www.zhihu.com/*
