@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FormulaCopier 
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.21
 // @description  Copy LaTeX formulas when copying text on Zhihu.
 // @author       YuhangChen(github.com/yuhangchen0)
 // @match        https://www.zhihu.com/*
@@ -26,13 +26,13 @@
             const formulas = container.querySelectorAll('.ztext-math');
             formulas.forEach(formula => {
                 const texCode = formula.getAttribute('data-tex');
-                const texNode = document.createTextNode('$' + texCode + '$');
+                const texNode = document.createTextNode(texCode);
                 formula.replaceWith(texNode);
             });
 
             // Modify clipboard content
             event.clipboardData.setData('text/plain', container.textContent);
-            event.preventDefault(); // Prevent default copy action
+            event.preventDefault();
         }
     });
 
@@ -59,7 +59,19 @@
         }
     });
 
-    
+    function convertLineBreaks(node) {
+        if (node.nodeName === 'BR') {
+            node.parentNode.replaceChild(document.createTextNode('\n'), node);
+        } else if (node.nodeName === 'P' && node.nextElementSibling) {
+            // Add a newline after the section
+            node.appendChild(document.createTextNode('\n\n'));
+        } else {
+            const children = Array.from(node.childNodes);
+            for (let child of children) {
+                convertLineBreaks(child);
+            }
+        }
+    }
 
     function getSelectionHtml() {
         const sel = window.getSelection();
@@ -68,6 +80,10 @@
             for (let i = 0, len = sel.rangeCount; i < len; ++i) {
                 container.appendChild(sel.getRangeAt(i).cloneContents());
             }
+
+            // Keep newline
+            convertLineBreaks(container);
+
             return container.innerHTML;
         }
         return '';

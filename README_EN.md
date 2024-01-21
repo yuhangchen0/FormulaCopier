@@ -1,12 +1,10 @@
 [中文](./README.md) | English
 
 # FormulaCopier
-When copying content from certain websites (e.g., zhihu.com), if there are rendered LaTeX formulas, they might not be copied correctly.
 
-This Tampermonkey script allows you to copy the text along with its LaTeX formulas on these websites. Additionally, when you select text containing LaTeX formulas, it will highlight the formulas.
+This Tampermonkey script allows you to copy text and the original LaTeX formulas together while adding highlights to the formulas on zhihu.com.
 
-It's currently only tested to work on Google Chrome and hasn't been tested on other browsers.
-
+Tested and works on Google Chrome and Microsoft Edge.
 
 ## Supported Websites
 
@@ -14,24 +12,20 @@ It's currently only tested to work on Google Chrome and hasn't been tested on ot
 * https://zhuanlan.zhihu.com/p/*
 
 ## Features
-- **Copy Formulas**: When you copy text, the LaTeX formulas will be copied along with the text, ensuring the formulas are correctly formatted when pasted elsewhere.
 
-- **Formula Highlight**: When you select text that contains LaTeX formulas, the formulas will be highlighted, making it easy for you to identify if the text is copied.
+* **Copy Formulas**: When you copy text, the LaTeX formulas will be copied along with the text, ensuring the formulas are correctly formatted.
+* **Formula Highlight**: When you select text that contains LaTeX formulas, the formulas will be highlighted.
 
 ## Installation
-1. Ensure you have [Tampermonkey](http://tampermonkey.net/) or a similar user script manager installed.
-2. Click [Install Link](https://github.com/yuhangchen0/FormulaCopier/raw/main/FormulaCopier.user.js) and you will be directed to the Tempermonkey install page. Simply install it.
 
-## Usage
-1. After installing the script, visit Zhihu or Zhihu Zhuanlan.
-2. When you select text containing LaTeX formulas, they will be automatically highlighted.
-3. Copy the text and paste it elsewhere, and you'll see that the LaTeX formulas have been copied correctly.
+* Ensure Tampermonkey (http://tampermonkey.net/) or a similar userscript manager is installed and enabled.
+* Click [Install Plugin](https://github.com/yuhangchen0/FormulaCopier/raw/main/FormulaCopier.user.js) to open the Tampermonkey installation page and click install.
+
 
 ## Feedback and Suggestions
-If you encounter any issues or have any suggestions while using it, feel free to raise them in the Issues section of this project.
 
-## License
-This project is licensed under the MIT license.
+This project is under the MIT license. If you encounter any issues or have suggestions, feel free to open an issue or submit a Pull Request on the project's Issues page.
+
 
 ## Preview
 
