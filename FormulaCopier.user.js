@@ -26,7 +26,7 @@
             const formulas = container.querySelectorAll('.ztext-math');
             formulas.forEach(formula => {
                 const texCode = formula.getAttribute('data-tex');
-                const texNode = document.createTextNode(texCode);
+                const texNode = document.createTextNode('$' + texCode + '$');
                 formula.replaceWith(texNode);
             });
 
