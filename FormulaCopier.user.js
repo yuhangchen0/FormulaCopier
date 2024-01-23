@@ -1,47 +1,31 @@
 // ==UserScript==
-// @name         FormulaCopier 
+// @name         FormulaCopier
 // @namespace    http://tampermonkey.net/
-// @version      0.22
-// @description  Copy LaTeX formulas when copying text on Zhihu.
-// @author       YuhangChen(github.com/yuhangchen0)
+// @version      0.3
+// @description  Copy LaTeX formulas when copying text on Zhihu and Wikipedia.
+// @author       Yuhang Chen(github.com/yuhangchen0)
 // @match        https://www.zhihu.com/*
 // @match        https://zhuanlan.zhihu.com/p/*
+// @match        https://*.wikipedia.org/*
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Style for highlighting selected formulas
-    const highlightStyle = 'background-color: lightblue;';
-
     document.addEventListener('copy', function(event) {
         let selectedHtml = getSelectionHtml();
 
-        // Check if we have any formula in the selection.
-        if (selectedHtml.includes('data-tex')) {
-            const container = document.createElement('div');
-            container.innerHTML = selectedHtml;
-
-            const formulas = container.querySelectorAll('.ztext-math');
-            formulas.forEach(formula => {
-                const texCode = formula.getAttribute('data-tex');
-                const texNode = document.createTextNode('$' + texCode + '$');
-                formula.replaceWith(texNode);
-            });
-
-            // Modify clipboard content
-            event.clipboardData.setData('text/plain', container.textContent);
-            event.preventDefault();
+        if (window.location.hostname.includes('zhihu.com')) {
+            handleZhihu(selectedHtml, event);
+        } else if (window.location.hostname.includes('wikipedia.org')) {
+            handleWiki(selectedHtml, event);
         }
     });
 
-    // When selection changes, check if any formula is selected
     document.addEventListener('selectionchange', function() {
         const allFormulas = document.querySelectorAll('.ztext-math');
-        allFormulas.forEach(formula => {
-            formula.removeAttribute('style'); // Clear previous highlights
-        });
+        allFormulas.forEach(formula => removeHighlightStyle(formula));
 
         const sel = window.getSelection();
         if (sel.rangeCount) {
@@ -50,14 +34,73 @@
                 const selectedFormulas = range.cloneContents().querySelectorAll('.ztext-math');
                 selectedFormulas.forEach(selectedFormula => {
                     allFormulas.forEach(pageFormula => {
-                        if (selectedFormula.getAttribute('data-tex') === pageFormula.getAttribute('data-tex') && selectedFormula.isEqualNode(pageFormula)) {
-                            pageFormula.setAttribute('style', highlightStyle);
+                        if (selectedFormula.getAttribute('data-tex') === pageFormula.getAttribute('data-tex')) {
+                            applyHighlightStyle(pageFormula);
                         }
                     });
                 });
             }
         }
     });
+
+    function handleZhihu(selectedHtml, event) {
+        if (selectedHtml.includes('data-tex')) {
+            const container = document.createElement('div');
+            container.innerHTML = selectedHtml;
+            replaceZhihuFormulas(container, '.ztext-math', 'data-tex');
+            setClipboardData(event, container.textContent);
+        }
+    }
+
+    function handleWiki(selectedHtml, event) {
+        if (selectedHtml.includes('mwe-math-element')) {
+            const container = document.createElement('div');
+            container.innerHTML = selectedHtml;
+            replaceWikipediaFormulas(container);
+            setClipboardData(event, container.textContent);
+        }
+    }
+
+    function applyHighlightStyle(formula) {
+        const mathJaxSVG = formula.querySelector('.MathJax_SVG');
+        if (mathJaxSVG) {
+            mathJaxSVG.style.backgroundColor = 'lightblue';
+        }
+    }
+
+    function removeHighlightStyle(formula) {
+        const mathJaxSVG = formula.querySelector('.MathJax_SVG');
+        if (mathJaxSVG && mathJaxSVG.style) {
+            mathJaxSVG.style.backgroundColor = '';
+        }
+    }
+
+    function replaceWikipediaFormulas(container) {
+        const formulas = container.querySelectorAll('.mwe-math-element');
+        formulas.forEach(formula => {
+            const annotation = formula.querySelector('annotation[encoding="application/x-tex"]');
+            if (annotation) {
+                const texCode = annotation.textContent;
+                const texNode = document.createTextNode('$' + texCode + '$');
+                formula.replaceWith(texNode);
+            }
+        });
+    }
+
+    function replaceZhihuFormulas(container, selector, attribute) {
+        const formulas = container.querySelectorAll(selector);
+        formulas.forEach(formula => {
+            const texCode = formula.getAttribute(attribute);
+            const texNode = document.createTextNode('$' + texCode + '$');
+            formula.replaceWith(texNode);
+        });
+    }
+
+
+    function setClipboardData(event, text) {
+        event.clipboardData.setData('text/plain', text);
+        event.preventDefault();
+    }
 
     function convertLineBreaks(node) {
         if (node.nodeName === 'BR') {
@@ -83,7 +126,6 @@
 
             // Keep newline
             convertLineBreaks(container);
-
             return container.innerHTML;
         }
         return '';
